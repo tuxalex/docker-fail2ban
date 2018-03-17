@@ -4,7 +4,6 @@ Fail2Ban for docker environment. This is compatible with docker web hosts.
 
 For this, you should use action **docker-iptables-multiport** which works as iptables-multiport
 
-This first version contains fail2ban-0.8.13-1.
 
 ### Usage
 To run it:

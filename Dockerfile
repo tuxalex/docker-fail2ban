@@ -1,21 +1,13 @@
-FROM debian:jessie
-MAINTAINER SuperITMan <admin@superitman.com>
+FROM alpine:latest
+MAINTAINER tuxalex
 
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt-get update -y -q && \
-    apt-get install -y -q --no-install-recommends\
-    fail2ban \
-    iptables \
-    exim4 \
-    bsd-mailx \
-    whois \
-    && rm -rf /var/lib/apt/lists/*
-
-ADD docker-entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
+RUN apk update && \
+    apk upgrade && \
+    apk add --update --no-cache fail2ban bash && \
+    rm /var/cache/apk/*
 
 COPY filter.d/ /etc/fail2ban/filter.d/
 COPY action.d/ /etc/fail2ban/action.d/
 COPY jail.local /etc/fail2ban/
 
-ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+ENTRYPOINT ["fail2ban-client", "-f", "start"]
